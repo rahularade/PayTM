@@ -21,7 +21,6 @@ const config_1 = require("../config");
 const middleware_1 = __importDefault(require("../middleware"));
 const userRouter = express_1.default.Router();
 const signupBody = zod_1.default.object({
-    username: zod_1.default.email("Invalid email address").trim().toLowerCase(),
     firstName: zod_1.default
         .string()
         .trim()
@@ -32,6 +31,7 @@ const signupBody = zod_1.default.object({
         .trim()
         .min(3, "Lastname must be at least 3 characters")
         .max(30, "Lastname must be less than 30 characters"),
+    username: zod_1.default.email("Invalid email address").trim().toLowerCase(),
     password: zod_1.default
         .string()
         .min(8, "Password must be at least 8 characters")
@@ -45,9 +45,9 @@ const signinBody = signupBody.pick({
     password: true,
 });
 const updateBody = signupBody.pick({
-    password: true,
     firstName: true,
     lastName: true,
+    password: true,
 });
 userRouter.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -174,11 +174,13 @@ userRouter.get("/bulk", middleware_1.default, (req, res) => __awaiter(void 0, vo
             {
                 firstName: {
                     $regex: filter,
+                    $options: "i"
                 },
             },
             {
                 lastName: {
                     $regex: filter,
+                    $options: "i"
                 },
             },
         ])
@@ -186,7 +188,7 @@ userRouter.get("/bulk", middleware_1.default, (req, res) => __awaiter(void 0, vo
             .lean()
             .exec();
         res.status(200).json({
-            users,
+            users: users.filter(user => String(user._id) !== req.userId),
         });
     }
     catch (error) {

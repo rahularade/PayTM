@@ -197,7 +197,7 @@ userRouter.get("/bulk", auth, async (req, res) => {
             .exec();
     
         res.status(200).json({
-            users,
+            users: users.filter(user => String(user._id) !== req.userId),
         });
     } catch (error) {
         res.status(500).json({
