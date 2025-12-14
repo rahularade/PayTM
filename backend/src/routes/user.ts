@@ -3,7 +3,7 @@ import z from "zod";
 import { Account, User } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { IS_PROD, JWT_SECRET } from "../config";
+import { JWT_SECRET } from "../config";
 import auth from "../middleware";
 
 const userRouter = express.Router();

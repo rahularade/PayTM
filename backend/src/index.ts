@@ -1,8 +1,10 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import express from "express";
 import rootRouter from "./routes";
 import cors from "cors";
 import mongoose, { MongooseError } from "mongoose";
-import { MONGODB_URL } from "./config";
+import { JWT_SECRET, MONGODB_URL } from "./config";
 
 const app = express();
 app.use(cors());
