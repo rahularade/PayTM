@@ -52,7 +52,11 @@ export function SendMoney() {
             navigate("/dashboard")
         } catch (error) {
             if(error instanceof AxiosError){
-                console.log(error.response?.data.message)
+                if (error.response) {
+                    alert(error.response.data.message);
+                } else {
+                    alert("Server is down. Please try again later.")
+                }
             }
         }
     }

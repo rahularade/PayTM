@@ -5,7 +5,7 @@ export function Hero() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[95vh] text-center px-4 bg-white">
-      <h1 className="text-6xl md:text-8xl text-gray-900 font-black tracking-tighter mb-6">
+      <h1 className="text-6xl md:text-8xl text-gray-900 font-black mb-6">
         SEND CASH.<br />
         <span className="text-gray-400">FAKE CASH.</span>
       </h1>

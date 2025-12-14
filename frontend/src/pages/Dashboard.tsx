@@ -21,6 +21,9 @@ export function Dashboard(){
             if (error instanceof AxiosError) {
                 if(error.response?.status === 401){
                     navigate("/signin")
+                } else {
+                    alert("Server is down. Please try again later.")
+                    navigate("/")
                 }
             }
         })
