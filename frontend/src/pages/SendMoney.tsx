@@ -4,6 +4,7 @@ import { useState, type ChangeEvent } from "react";
 import axios, { AxiosError } from "axios";
 import { BACKEND_URL } from "../config";
 import { Appbar } from "../components/Appbar";
+import { Footer } from "../components/Footer";
 
 export function SendMoney() {
     const [searchParams] = useSearchParams();
@@ -63,7 +64,7 @@ export function SendMoney() {
     }
 
     return (
-        <div className="min-h-dvh grid grid-rows-[auto_1fr]">
+        <div className="min-h-dvh grid grid-rows-[auto_1fr_auto]">
         <Appbar />
         <div className="w-dvw flex justify-center pb-20 items-center bg-gray-50">
             <div className="h-min w-96 p-8 rounded-lg shadow-lg bg-white text-center">
@@ -91,6 +92,7 @@ export function SendMoney() {
                 </button>
             </div>
             </div>
+            <Footer />
         </div>
     );
 }

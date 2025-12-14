@@ -5,6 +5,7 @@ import axios, { AxiosError } from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { Users } from "../components/Users";
+import { Footer } from "../components/Footer";
 
 export function Dashboard(){
     const [balance, setBalance] = useState(0)
@@ -29,11 +30,12 @@ export function Dashboard(){
         })
     }, [])
 
-    return <div className="w-full">
+    return <div className="h-dvh w-dvw grid grid-rows-[auto_1fr_auto]">
         <Appbar/>
         <div>
             <Balance value={balance}/>
             <Users />
         </div>
+        <Footer />
     </div>
 }
