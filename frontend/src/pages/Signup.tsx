@@ -6,27 +6,27 @@ import { InputBox } from "../components/InputBox";
 import { SubHeading } from "../components/SubHeading";
 import axios, { AxiosError } from "axios";
 import { BACKEND_URL } from "../config";
-import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
-import { Footer } from "../components/Footer";
+import { useAuth } from "../contexts/AuthContext";
 
 export function Signup() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+    const {refreshUser } = useAuth()
+
 
     const signup = async () => {
         try {
-            await axios.post(`${BACKEND_URL}/user/signup`, {
+            const response = await axios.post(`${BACKEND_URL}/user/signup`, {
                 firstName,
                 lastName,
                 username,
                 password,
             });
-
-            navigate("/signin");
+            localStorage.setItem("token", "Bearer " + response.data.token);
+            await refreshUser()
         } catch (error) {
             if (error instanceof AxiosError) {
                 if (error.response) {
@@ -39,10 +39,10 @@ export function Signup() {
     };
 
     return (
-        <div className="min-h-dvh grid grid-rows-[auto_1fr_auto] bg-stone-200">
+        <div className="min-h-dvh grid grid-rows-[auto_1fr] bg-stone-200">
             <Navbar type={"signup"}/>
             <div className="bg-stone-200 w-dvw flex justify-center items-center pb-10">
-                <div className="bg-white w-md text-center h-max py-8 px-10 rounded-lg">
+                <div className="bg-white w-11/12 md:w-md text-center h-max py-6 px-8 md:py-8 md:px-10 rounded-lg">
                     <Heading label="Sign Up" />
                     <SubHeading label="Enter your infromation to create an account" />
                     <InputBox
@@ -82,7 +82,6 @@ export function Signup() {
                     />
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

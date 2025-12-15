@@ -25,7 +25,7 @@ export function Appbar() {
     return (
         <div
             ref={ref}
-            className="flex items-center text-gray-900 justify-between px-20 py-3 border-b-2 border-black bg-white sticky top-0 z-50"
+            className="flex items-center text-gray-900 justify-between px-5 py-2 md:px-20 md:py-3 border-b-2 border-black bg-white sticky top-0 z-50"
         >
             <div
                 className="text-2xl font-black cursor-pointer"
@@ -53,7 +53,7 @@ export function Appbar() {
 function Accordion({ user }: { user: UserType }) {
     const { setUser } = useAuth();
     return (
-        <div className="absolute right-20 top-18 w-40 bg-white border border-slate-200 rounded shadow-md font-semibold">
+        <div className="absolute right-5 top-16 md:right-20 md:top-18 w-40 bg-white border border-slate-200 rounded shadow-md font-semibold">
             <ul className="py-2">
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                     {user?.firstName} {user?.lastName}

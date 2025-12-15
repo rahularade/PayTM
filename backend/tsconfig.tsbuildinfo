@@ -1,1 +1,1 @@
-{"root":["./src/config.ts","./src/db.ts","./src/index.ts","./src/middleware.ts","./src/routes/account.ts","./src/routes/index.ts","./src/routes/user.ts"],"version":"5.9.3"}
+{"root":["./src/config.ts","./src/db.ts","./src/index.ts","./src/middlewares/auth.ts","./src/middlewares/ratelimiter.ts","./src/routes/account.ts","./src/routes/index.ts","./src/routes/user.ts"],"version":"5.9.3"}

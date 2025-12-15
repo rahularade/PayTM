@@ -1,9 +1,19 @@
 import express from "express";
 import { Account } from "../db";
-import auth from "../middleware";
+import auth from "../middlewares/auth";
 import { startSession } from "mongoose";
+import z from "zod";
 
 const accountRouter = express.Router();
+const amountSchema = z
+  .number("Amount must be a number")
+  .gt(0, "Amount must be greater than 0")
+  .refine(
+    (val) => Number.isFinite(val) && Math.round(val * 100) === val * 100,
+    {
+      message: "Amount must have at most 2 decimal places",
+    }
+  );
 
 accountRouter.get("/balance", auth, async (req, res) => {
     try {
@@ -15,7 +25,7 @@ accountRouter.get("/balance", auth, async (req, res) => {
         }
 
         res.status(200).json({
-            balance: account.balance,
+            balance: account.balance / 100,
         });
     } catch (error) {
         res.status(500).json({
@@ -30,6 +40,15 @@ accountRouter.post("/transfer", auth, async (req, res) => {
     try {
         session.startTransaction();
         const { amount, to } = req.body;
+        const parsedData = amountSchema.safeParse(amount)
+
+        if (!parsedData.success) {
+            return res.status(400).json({
+                message: parsedData.error.issues[0].message,
+            });
+        }
+
+        const parsedAmount = parsedData.data * 100
 
         const toAccount = await Account.findOne({ userId: to }).session(
             session
@@ -53,11 +72,11 @@ accountRouter.post("/transfer", auth, async (req, res) => {
 
         await Account.updateOne(
             { userId: req.userId },
-            { $inc: { balance: -amount } }
+            { $inc: { balance: -parsedAmount } }
         ).session(session);
         await Account.updateOne(
             { userId: to },
-            { $inc: { balance: amount } }
+            { $inc: { balance: parsedAmount } }
         ).session(session);
 
         await session.commitTransaction();

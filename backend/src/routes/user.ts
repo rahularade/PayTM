@@ -4,7 +4,7 @@ import { Account, User } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config";
-import auth from "../middleware";
+import auth from "../middlewares/auth";
 
 const userRouter = express.Router();
 const signupBody = z.object({
@@ -70,9 +70,15 @@ userRouter.post("/signup", async (req, res) => {
             balance: 1 + Math.floor(Math.random() * 100000)
         })
 
+        const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+            expiresIn: "7d",
+        });
+
         res.status(201).json({
             message: "User created successfully",
+            token
         });
+
     } catch (error) {
         res.status(500).json({
             message: "Sign up failed. Try again later.",

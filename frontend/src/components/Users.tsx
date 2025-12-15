@@ -31,13 +31,15 @@ export function Users() {
                 if (error instanceof AxiosError) {
                     if (error.response?.status === 401) {
                         navigate("/signin");
+                    } else if(error.response?.status === 429){
+                        alert(error.response?.data.message)
                     }
                 }
             });
     }, [debounceValue]);
 
     return (
-        <div className="px-20">
+        <div className="px-5 md:px-20">
             <div className="font-bold mt-6 text-xl py-1">Users</div>
             <input
                 type="text"
@@ -57,7 +59,7 @@ export function Users() {
 function User({ user }: { user: UserType }) {
     const navigate = useNavigate();
     return (
-        <div className="flex justify-between items-center px-5">
+        <div className="flex justify-between items-center">
             <div className="flex items-center">
                 <Avatar
                     letter={user.firstName[0].toUpperCase()}

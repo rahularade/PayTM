@@ -5,10 +5,12 @@ import rootRouter from "./routes";
 import cors from "cors";
 import mongoose, { MongooseError } from "mongoose";
 import { JWT_SECRET, MONGODB_URL } from "./config";
+import apiLimiter from './middlewares/ratelimiter';
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json())
+app.use(apiLimiter)
 
 app.use("/api/v1", rootRouter);
 

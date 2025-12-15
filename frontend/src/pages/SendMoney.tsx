@@ -4,7 +4,6 @@ import { useState, type ChangeEvent } from "react";
 import axios, { AxiosError } from "axios";
 import { BACKEND_URL } from "../config";
 import { Appbar } from "../components/Appbar";
-import { Footer } from "../components/Footer";
 
 export function SendMoney() {
     const [searchParams] = useSearchParams();
@@ -35,7 +34,7 @@ export function SendMoney() {
     };
 
     const handleTransfer = async () => {
-        if (Number(amount) < 0) {
+        if (Number(amount) <= 0) {
             alert("Invalid Amount")
             return
         }
@@ -64,10 +63,10 @@ export function SendMoney() {
     }
 
     return (
-        <div className="min-h-dvh grid grid-rows-[auto_1fr_auto] bg-gray-50">
+        <div className="min-h-dvh grid grid-rows-[auto_1fr] bg-gray-50">
         <Appbar />
         <div className="w-dvw flex justify-center pb-20 items-center bg-gray-50">
-            <div className="h-min w-96 p-8 rounded-lg shadow-lg bg-white text-center">
+            <div className="h-min w-11/12 md:w-96 p-8 rounded-lg shadow-lg bg-white text-center">
                 <h2 className="text-3xl font-bold pb-4">Send Money</h2>
                 <div className="flex items-center space-x-2">
                     <Avatar letter="U" color="secondary" />
@@ -92,7 +91,6 @@ export function SendMoney() {
                 </button>
             </div>
             </div>
-            <Footer />
         </div>
     );
 }
