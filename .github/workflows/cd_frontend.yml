@@ -3,6 +3,8 @@ on:
     push:
         branches:
             - main
+        paths:
+            - 'frontend/**'
 
 jobs:
     deploy:
@@ -21,6 +23,8 @@ jobs:
               run: npm ci
             
             - name: Build project
+              env:
+                VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
               run: npm run build
             
             - name: Configure AWS credentials
