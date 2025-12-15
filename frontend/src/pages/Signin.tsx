@@ -4,7 +4,6 @@ import { Button } from "../components/Button";
 import { Heading } from "../components/Heading";
 import { InputBox } from "../components/InputBox";
 import { SubHeading } from "../components/SubHeading";
-import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../config";
 import axios, { AxiosError } from "axios";
 import { Navbar } from "../components/Navbar";
@@ -13,7 +12,6 @@ import { useAuth } from "../contexts/AuthContext";
 export function Signin() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
     const {refreshUser } = useAuth()
 
     const signin = async () => {
