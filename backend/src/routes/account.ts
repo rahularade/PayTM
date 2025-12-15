@@ -8,12 +8,6 @@ const accountRouter = express.Router();
 const amountSchema = z
   .number("Amount must be a number")
   .gt(0, "Amount must be greater than 0")
-  .refine(
-    (val) => Number.isFinite(val) && Math.round(val * 100) === val * 100,
-    {
-      message: "Amount must have at most 2 decimal places",
-    }
-  );
 
 accountRouter.get("/balance", auth, async (req, res) => {
     try {
@@ -48,7 +42,7 @@ accountRouter.post("/transfer", auth, async (req, res) => {
             });
         }
 
-        const parsedAmount = parsedData.data * 100
+        const parsedAmount = Number(parsedData.data.toFixed(2)) * 100
 
         const toAccount = await Account.findOne({ userId: to }).session(
             session
