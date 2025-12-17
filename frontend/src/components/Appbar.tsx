@@ -3,7 +3,7 @@ import { Avatar } from "./Avatar";
 import type { UserType } from "./Users";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { Github } from "./Github";
+import { Github } from "../icons/Github";
 
 export function Appbar() {
     const [open, setOpen] = useState(false);

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Github } from "./Github";
+import { Github } from "../icons/Github";
 
 export const Navbar = ({
     type = null,

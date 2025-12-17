@@ -14,8 +14,7 @@ export function Signup() {
     const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const {refreshUser } = useAuth()
-
+    const { refreshUser } = useAuth();
 
     const signup = async () => {
         try {
@@ -26,23 +25,23 @@ export function Signup() {
                 password,
             });
             localStorage.setItem("token", "Bearer " + response.data.token);
-            await refreshUser()
+            await refreshUser();
         } catch (error) {
             if (error instanceof AxiosError) {
                 if (error.response) {
                     alert(error.response.data.message);
                 } else {
-                    alert("Server is down. Please try again later.")
+                    alert("Server is down. Please try again later.");
                 }
             }
         }
     };
 
     return (
-        <div className="min-h-dvh grid grid-rows-[auto_1fr] bg-stone-200">
-            <Navbar type={"signup"}/>
-            <div className="bg-stone-200 w-dvw flex justify-center items-center pb-10">
-                <div className="bg-white w-11/12 md:w-md text-center h-max py-6 px-8 md:py-8 md:px-10 rounded-lg">
+        <div className="min-h-dvh grid grid-rows-[auto_1fr] bg-gray-50">
+            <Navbar type={"signup"} />
+            <div className="bg-gray-50 w-dvw flex justify-center items-center pb-10">
+                <div className="bg-white w-11/12 shadow-lg md:w-md text-center h-max py-6 px-8 md:py-8 md:px-10 rounded-lg">
                     <Heading label="Sign Up" />
                     <SubHeading label="Enter your infromation to create an account" />
                     <InputBox
@@ -74,7 +73,9 @@ export function Signup() {
                             setPassword(e.target.value);
                         }}
                     />
-                    <Button label="Sign Up" onClick={signup} />
+                    <div className="mt-4">
+                        <Button label="Sign Up" onClick={signup} />
+                    </div>
                     <BottomWarning
                         label="Already have an account?"
                         buttonText="Sign In"

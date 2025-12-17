@@ -4,13 +4,16 @@ import { useState, type ChangeEvent } from "react";
 import axios, { AxiosError } from "axios";
 import { BACKEND_URL } from "../config";
 import { Appbar } from "../components/Appbar";
+import { TransferSuccessModal } from "../components/TransferSuccessModal";
 
 export function SendMoney() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const name = searchParams.get("name");
     const [amount, setAmount] = useState("");
-    const navigate = useNavigate()
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false)
+    const navigate = useNavigate();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value;
@@ -35,62 +38,79 @@ export function SendMoney() {
 
     const handleTransfer = async () => {
         if (Number(amount) <= 0) {
-            alert("Invalid Amount")
-            return
+            alert("Invalid Amount");
+            return;
         }
-
+        
+        setLoading(true)
         try {
-            const response = await axios.post(`${BACKEND_URL}/account/transfer`, {
-                amount: Number(amount),
-                to: id
-            }, {
-                headers: {
-                    Authorization: localStorage.getItem("token")
+            await axios.post(
+                `${BACKEND_URL}/account/transfer`,
+                {
+                    amount: Number(amount),
+                    to: id,
+                },
+                {
+                    headers: {
+                        Authorization: localStorage.getItem("token"),
+                    },
                 }
-            })
-
-            alert(response.data.message)
-            navigate("/dashboard")
+            );
+            setLoading(false)
+            setOpen(true)
         } catch (error) {
-            if(error instanceof AxiosError){
+            if (error instanceof AxiosError) {
                 if (error.response) {
                     alert(error.response.data.message);
                 } else {
-                    alert("Server is down. Please try again later.")
+                    alert("Server is down. Please try again later.");
                 }
             }
         }
-    }
+    };
 
     return (
         <div className="min-h-dvh grid grid-rows-[auto_1fr] bg-gray-50">
-        <Appbar />
-        <div className="w-dvw flex justify-center pb-20 items-center bg-gray-50">
-            <div className="h-min w-11/12 md:w-96 p-8 rounded-lg shadow-lg bg-white text-center">
-                <h2 className="text-3xl font-bold pb-4">Send Money</h2>
-                <div className="flex items-center space-x-2">
-                    <Avatar letter="U" color="secondary" />
-                    <h3 className="text-2xl font-semibold">{name}</h3>
-                </div>
-                <div>
-                    <div className="font-medium text-left py-2">
-                        Amount (in Rs)
+            <Appbar />
+            <div className="w-dvw flex justify-center pb-20 items-center bg-gray-50">
+                <div className="h-min w-11/12 md:w-96 p-8 rounded-lg shadow-lg bg-white text-center">
+                    <h2 className="text-3xl font-bold pb-4">Send Money</h2>
+                    <div className="flex items-center space-x-2">
+                        <Avatar letter="U" color="secondary" />
+                        <h3 className="text-2xl font-semibold">{name}</h3>
                     </div>
-                    <input
-                        type="text"
-                        inputMode="numeric"
-                        value={amount}
-                        min={0}
-                        placeholder="Enter amount"
-                        onChange={handleChange}
-                        className="w-full px-2 py-1.5 border border-slate-200 rounded outline-0"
-                    />
+                    <div>
+                        <div className="font-medium text-left py-2">
+                            Amount (in Rs)
+                        </div>
+                        <input
+                            type="text"
+                            inputMode="numeric"
+                            value={amount}
+                            min={0}
+                            placeholder="Enter amount"
+                            onChange={handleChange}
+                            className="w-full px-2 py-1.5 border border-slate-200 rounded outline-0"
+                        />
+                    </div>
+                    <button
+                        className="justify-center mt-4 rounded-md font-bold ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white disabled:opacity-70"
+                        onClick={handleTransfer}
+                        disabled={loading}
+                    >
+                        Initiate Transfer
+                    </button>
                 </div>
-                <button className="justify-center mt-4 rounded-md font-bold ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white" onClick={handleTransfer}>
-                    Initiate Transfer
-                </button>
             </div>
-            </div>
+            <TransferSuccessModal
+                open={open}
+                amount={amount}
+                name={name}
+                onClose={() => {
+                    setOpen(false);
+                    navigate("/dashboard");
+                }}
+            />
         </div>
     );
 }

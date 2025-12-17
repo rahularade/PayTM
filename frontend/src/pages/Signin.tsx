@@ -12,7 +12,7 @@ import { useAuth } from "../contexts/AuthContext";
 export function Signin() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const {refreshUser } = useAuth()
+    const { refreshUser } = useAuth();
 
     const signin = async () => {
         try {
@@ -22,23 +22,23 @@ export function Signin() {
             });
 
             localStorage.setItem("token", "Bearer " + response.data.token);
-            await refreshUser()
+            await refreshUser();
         } catch (error) {
             if (error instanceof AxiosError) {
                 if (error.response) {
                     alert(error.response.data.message);
                 } else {
-                    alert("Server is down. Please try again later.")
+                    alert("Server is down. Please try again later.");
                 }
             }
         }
     };
 
     return (
-        <div className="min-h-dvh grid grid-rows-[auto_1fr] bg-stone-200">
+        <div className="min-h-dvh grid grid-rows-[auto_1fr] bg-gray-50">
             <Navbar type={"signin"} />
-            <div className="bg-stone-200 w-dvw flex justify-center items-center pb-10">
-                <div className="bg-white w-11/12 md:w-md text-center h-max py-6 px-8 md:py-8 md:px-10 rounded-lg">
+            <div className="bg-gray-50 w-dvw flex justify-center items-center pb-10">
+                <div className="bg-white w-11/12 shadow-lg md:w-md text-center h-max py-6 px-8 md:py-8 md:px-10 rounded-lg">
                     <Heading label="Sign In" />
                     <SubHeading label="Enter your credentials to access your account" />
                     <InputBox
@@ -56,7 +56,9 @@ export function Signin() {
                             setPassword(e.target.value);
                         }}
                     />
-                    <Button label="Sign In" onClick={signin} />
+                    <div className="mt-4">
+                        <Button label="Sign In" onClick={signin} />
+                    </div>
                     <BottomWarning
                         label="Don't have an account?"
                         buttonText="Sign Up"

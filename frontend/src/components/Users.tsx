@@ -19,7 +19,10 @@ export function Users() {
     const debounceValue = useDebounce(filter, 500);
 
     useEffect(() => {
-        if(!debounceValue.trim()) return
+        if(!debounceValue.trim()){
+            setUsers([])
+            return
+        }
         axios
             .get(`${BACKEND_URL}/user/bulk?filter=${debounceValue}`, {
                 headers: {
@@ -44,7 +47,7 @@ export function Users() {
             <input
                 type="text"
                 placeholder="Search users..."
-                className="w-full px-2 py-1 text-lg border border-slate-200 rounded outline-0"
+                className="w-full px-2 md:px-5 py-1.5 border border-slate-200 rounded outline-0"
                 onChange={(e) => setFilter(e.target.value)}
             />
             <div className="my-2">
@@ -59,13 +62,13 @@ export function Users() {
 function User({ user }: { user: UserType }) {
     const navigate = useNavigate();
     return (
-        <div className="flex justify-between items-center">
-            <div className="flex items-center">
+        <div className="px-2 md:px-5 py-2 flex justify-between items-center rounded border border-slate-100">
+            <div className="flex items-center gap-2">
                 <Avatar
                     letter={user.firstName[0].toUpperCase()}
                     color="primary"
                 />
-                <div className="ml-4">
+                <div className="font-semibold">
                     {user.firstName} {user.lastName}
                 </div>
             </div>

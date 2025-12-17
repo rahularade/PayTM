@@ -6,6 +6,7 @@ import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { Users } from "../components/Users";
 import { Footer } from "../components/Footer";
+import { Transactions } from "../components/Transactions";
 
 export function Dashboard() {
     const [balance, setBalance] = useState(0);
@@ -41,6 +42,7 @@ export function Dashboard() {
             <div>
                 <Balance value={balance} />
                 <Users />
+                <Transactions />
             </div>
             <Footer />
         </div>
