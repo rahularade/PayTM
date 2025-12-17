@@ -3,7 +3,7 @@ name: Continuous Deployment (Backend)
 on: 
     push:
         branches:
-            - production
+            - main
         paths:
             - 'backend/**'
 
