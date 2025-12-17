@@ -1,4 +1,4 @@
-import { Check } from "./Check";
+import { Check } from "../icons/Check";
 
 interface Props {
     open: boolean;

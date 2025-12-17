@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
 import type { UserType } from "./Users";
 import { useAuth } from "../contexts/AuthContext";
-import { Sent } from "./Sent";
-import { Received } from "./Received";
+import { Sent } from "../icons/Sent";
+import { Received } from "../icons/Received";
 import { Avatar } from "./Avatar";
-import { Previous } from "./Previous";
-import { Next } from "./Next";
+import { Previous } from "../icons/Previous";
+import { Next } from "../icons/Next";
 
 interface TransactionType {
     _id: string;
