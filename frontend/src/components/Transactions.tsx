@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BACKEND_URL } from "../config";
 import type { UserType } from "./Users";
 import { useAuth } from "../contexts/AuthContext";
@@ -21,9 +21,10 @@ export function Transactions() {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [transactions, setTransactions] = useState<TransactionType[]>([]);
+    const abortControllerRef = useRef<AbortController | null>(null)
     const limit = 10;
 
-    const fetchTransactions = async () => {
+    const fetchTransactions = async (controller: AbortController) => {
         try {
             const response = await axios.get(
                 `${BACKEND_URL}/account/transactions?page=${page}&limit=${limit}`,
@@ -31,6 +32,7 @@ export function Transactions() {
                     headers: {
                         Authorization: localStorage.getItem("token"),
                     },
+                    signal: controller.signal
                 }
             );
 
@@ -40,13 +42,16 @@ export function Transactions() {
             setTransactions(response.data.transactions);
         } catch (error) {
             if (error instanceof AxiosError) {
+                if(error.name === "CanceledError") return 
                 alert(error.response?.data.message);
             }
         }
     };
 
     useEffect(() => {
-        fetchTransactions();
+        abortControllerRef.current?.abort();
+        abortControllerRef.current = new AbortController();
+        fetchTransactions(abortControllerRef.current);
     }, [page]);
 
     const totalPages = Math.ceil(total / limit);
